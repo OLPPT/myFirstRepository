@@ -1,13 +1,17 @@
 package com.example.demo;
 
+import com.example.demo.dao.RedisDaoImpl;
 import com.example.demo.dao.SpitterDao;
 import com.example.demo.model.Spitter;
+import com.example.demo.model.User;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.annotation.AnnotationConfigApplicationContext;
+import org.springframework.data.redis.core.RedisOperations;
 import org.springframework.test.context.junit4.SpringRunner;
 
 @RunWith(SpringRunner.class)
@@ -16,6 +20,10 @@ public class SpringinactioncodeApplicationTests {
 
 	@Autowired
 	ApplicationContext ac;
+
+	@Autowired
+	@Qualifier("stringRedisTemplate")
+	RedisOperations redisOperations;
 	@Test
 	public void contextLoads() {
 		SpitterDao spitterDao = (SpitterDao) ac.getBean("spitterDaoImpl");
@@ -35,5 +43,32 @@ public class SpringinactioncodeApplicationTests {
 		Spitter spitter = spitterDao.findById(1);
 		System.out.println(spitter);
 	}
+	@Test
+	public void testRedis(){
+		redisOperations.opsForValue().set("my_test_key","my_test_value");
 
+	}
+	@Test
+	public void testRedis1(){
+		if (redisOperations.hasKey("my_test_key")){
+			String value = (String)redisOperations.opsForValue().get("my_test_key");
+			System.out.println(value);
+		}
+	}
+	@Test
+	public void testRedisDao(){
+		RedisDaoImpl redisDao = (RedisDaoImpl)ac.getBean("redisDaoImpl");
+		String value = redisDao.add("my_test_key2","my_test_value2");
+		System.out.println(value);
+	}
+	@Test
+	public void testRedisList(){
+		redisOperations.opsForList();
+	}
+	@Test
+	public void test(){
+		User user = new User();
+		user.setAge("哈哈");
+		System.out.println(user.getAge());
+	}
 }
