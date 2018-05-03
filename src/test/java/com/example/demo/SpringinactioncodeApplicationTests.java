@@ -4,6 +4,7 @@ import com.example.demo.dao.RedisDaoImpl;
 import com.example.demo.dao.SpitterDao;
 import com.example.demo.model.Spitter;
 import com.example.demo.model.User;
+import com.example.demo.utils.FTPUtils;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -13,6 +14,9 @@ import org.springframework.context.ApplicationContext;
 import org.springframework.context.annotation.AnnotationConfigApplicationContext;
 import org.springframework.data.redis.core.RedisOperations;
 import org.springframework.test.context.junit4.SpringRunner;
+
+import java.util.Arrays;
+import java.util.List;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest
@@ -67,8 +71,9 @@ public class SpringinactioncodeApplicationTests {
 	}
 	@Test
 	public void test(){
-		User user = new User();
-		user.setAge("哈哈");
-		System.out.println(user.getAge());
+		FTPUtils.connect();
+		FTPUtils.login();
+		List<String> filenames = FTPUtils.listFiles("");
+		System.out.println(filenames.toArray());
 	}
 }
