@@ -3,6 +3,7 @@ package com.example.demo.controller;
 import com.example.demo.utils.FTPUtils;
 import org.apache.commons.net.ftp.FTP;
 import org.apache.commons.net.ftp.FTPClient;
+import org.apache.commons.net.ftp.FTPFile;
 import org.springframework.stereotype.Controller;
 import org.springframework.util.ClassUtils;
 import org.springframework.util.ResourceUtils;
@@ -13,10 +14,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
 
 import javax.servlet.http.HttpServletRequest;
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.InputStream;
-import java.io.OutputStream;
+import java.io.*;
 
 /**
  * Created by OL-PC on 2018/04/23.
@@ -75,5 +73,25 @@ public class FileController {
 //        is.close();
         os.close();
         return "success";
+    }
+    @RequestMapping(value = "/downFtp",method = RequestMethod.GET)
+    @ResponseBody
+    public String downFile() throws Exception{
+        FTPClient ftp = new FTPClient();
+        ftp.connect("10.88.125.196");
+        ftp.login("OL-PC","aa950919/");
+        ftp.setFileType(FTP.BINARY_FILE_TYPE);
+        ftp.setControlEncoding("UTF-8");
+        FTPFile[] files = ftp.listFiles();
+        String filename = "https.png";
+        for (FTPFile file : files){
+            if (file.getName().equals(filename)){
+                File local = new File("D:/"+ filename);
+                OutputStream os = new FileOutputStream(local);
+                ftp.retrieveFile(file.getName(),os);
+                os.close();
+            }
+        }
+        return "down success";
     }
 }

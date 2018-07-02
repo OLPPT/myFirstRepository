@@ -14,12 +14,14 @@ import org.springframework.context.ApplicationContext;
 import org.springframework.context.annotation.AnnotationConfigApplicationContext;
 import org.springframework.data.redis.core.RedisOperations;
 import org.springframework.test.context.junit4.SpringRunner;
+import org.springframework.test.context.web.WebAppConfiguration;
 
 import java.util.Arrays;
 import java.util.List;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest
+@WebAppConfiguration
 public class SpringinactioncodeApplicationTests {
 
 	@Autowired
@@ -75,5 +77,9 @@ public class SpringinactioncodeApplicationTests {
 		FTPUtils.login();
 		List<String> filenames = FTPUtils.listFiles("");
 		System.out.println(filenames.toArray());
+	}
+	@Test
+	public void testSocket(){
+
 	}
 }

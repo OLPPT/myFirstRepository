@@ -63,6 +63,7 @@ public class MybatisCRUDController {
     @RequestMapping("/selectPage/{username}")
     public List<SysUser> selectPage(@PathVariable String username) throws Exception{
         Map<String,Object> params = new HashMap<>();
+        params.entrySet();
         params.put("username",username);
         params.put("offset",0);
         params.put("limit",5);
